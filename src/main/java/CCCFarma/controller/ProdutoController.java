@@ -1,21 +1,23 @@
 package CCCFarma.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.websocket.server.PathParam;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import CCCFarma.model.produto.Lote;
 import CCCFarma.model.produto.Produto;
+import CCCFarma.model.produto.ProdutoResponse;
 import CCCFarma.model.produto.TipoProduto;
+import CCCFarma.repository.LoteRepositorio;
 import CCCFarma.repository.ProdutosRepositorio;
 
 @RestController
@@ -25,22 +27,31 @@ public class ProdutoController {
 	
 	@Autowired
 	private ProdutosRepositorio produtos;
+	@Autowired
+	private LoteRepositorio lotes;
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Produto> listaProdutos() {
+	
+	private List<Produto> getProdutos() {
 		return produtos.findAll();
 	}
-
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public List<ProdutoResponse> listaProdutos(){
+		List<ProdutoResponse> lista = new ArrayList<>();
+		for (Produto p : this.getProdutos()) {
+			List<Lote> lotesProduto = this.lotes.findByProduto(p);
+			int qtdDisponivel = 0;
+			for(Lote lote : lotesProduto) {
+				qtdDisponivel += lote.getQuantidadeInicial() - lote.getQuantidadeVendida();
+			}
+			lista.add(new ProdutoResponse(p, qtdDisponivel));
+		}
+		return lista;
+	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public List<Produto> produtoPorTipo(@RequestParam("tipo") String tipo) {
-		TipoProduto tipoBusca = null;
-		for (TipoProduto t: TipoProduto.values()) {
-			if (t.getTipo().equals(tipo.toLowerCase())) {
-				tipoBusca = t;
-			}
-		}
-		return produtos.findByTipo(tipoBusca);
+	public List<Produto> produtoPorTipo(@RequestParam(name = "tipo", required = false) TipoProduto tipo) {
+		return produtos.findByTipo(tipo);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -48,3 +59,4 @@ public class ProdutoController {
 		produtos.save(produto);
 	}
 }
+

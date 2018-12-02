@@ -28,21 +28,21 @@ public class Produto implements Serializable{
 	@NotNull
 	private String fabricante;
 	
+	@NotNull
+	private String descricao;
+	
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	private TipoProduto tipo;
 	
 	@NotNull
-	private String descricao;
-	
-	@NotNull
-	private int preco;
+	private double preco;
 	
 	public Produto() {
 	}
 
 	public Produto(@NotNull String nome, @NotNull String codBarra, @NotNull String fabricante,
-			@NotNull TipoProduto tipo, @NotNull int preco, @NotNull String descricao) {
+			@NotNull TipoProduto tipo, @NotNull double preco, @NotNull String descricao) {
 		this.nome = nome;
 		this.descricao = descricao;
 		this.codBarra = codBarra;
@@ -59,11 +59,11 @@ public class Produto implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public int getPreco() {
+	public double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(int preco) {
+	public void setPreco(double preco) {
 		this.preco = preco;
 	}
 
