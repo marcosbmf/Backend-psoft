@@ -39,9 +39,8 @@ public class ProdutoController {
 	}
 	
 	@RequestMapping(path = "/{produtoId}", method = RequestMethod.GET)
-	public ProdutoResponse getProduto(@PathVariable("produtoId") String produtoId) {
-		System.out.println(produtoId);
-		return new ProdutoResponse(this.produtos.getProduto(produtoId), 0);
+	public Produto getProduto(@PathVariable("produtoId") String produtoId) {
+		return this.produtos.getProduto(produtoId);
 	}
 	
 	@RequestMapping(path = "/{produtoId}", method = RequestMethod.POST)

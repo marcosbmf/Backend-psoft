@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/lotes")
+@RequestMapping("/produtos/{produtoId}/lote")
 public class LoteController {
 
 	@Autowired
 	private LoteService lotes;
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/{produtoId}")
+	@RequestMapping(method = RequestMethod.GET)
 	public List<Lote> listaLotesPorProduto(@PathVariable("produtoId") String produtoId) {
 		return lotes.listaLotesPorProduto(produtoId);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.PUT)
 	public void salvaLote(@RequestBody Lote lote) {
 		lotes.salvaLote(lote);
 	}

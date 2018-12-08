@@ -47,13 +47,13 @@ public class Produto implements Serializable{
 	private TipoProduto tipo;
 	
 	@NotNull
-	private double preco;
+	private Double preco;
 	
 	@OneToMany(mappedBy = "produto", targetEntity = br.com.edu.ufcg.cccfarma.api.lote.Lote.class, fetch = FetchType.LAZY)
 	private List<Lote> lotes;
 	
 	@Transient
-	private int qtdDisponivel;
+	private Integer qtdDisponivel;
 	
 	public Produto() {
 		this.lotes = new ArrayList<>();
