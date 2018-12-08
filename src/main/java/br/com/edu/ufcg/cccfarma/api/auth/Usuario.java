@@ -1,4 +1,4 @@
-package CCCFarma.model;
+package br.com.edu.ufcg.cccfarma.api.auth;
 
 import java.io.Serializable;
 import java.util.Date;

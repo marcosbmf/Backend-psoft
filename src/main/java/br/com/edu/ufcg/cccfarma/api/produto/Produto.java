@@ -1,4 +1,4 @@
-package CCCFarma.model.produto;
+package br.com.edu.ufcg.cccfarma.api.produto;
 
 import java.io.Serializable;
 
@@ -85,6 +85,36 @@ public class Produto implements Serializable{
 
 	public TipoProduto getTipo() {
 		return tipo;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codBarra == null) ? 0 : codBarra.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		if (codBarra == null) {
+			if (other.codBarra != null)
+				return false;
+		} else if (!codBarra.equals(other.codBarra))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return this.codBarra + " - " + this.nome + " - " + this.fabricante + " - " + this.descricao;
 	}
 
 	

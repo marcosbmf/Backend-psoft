@@ -1,11 +1,10 @@
-package CCCFarma.repository;
+package br.com.edu.ufcg.cccfarma.api.lote;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import CCCFarma.model.produto.Lote;
-import CCCFarma.model.produto.Produto;
+import br.com.edu.ufcg.cccfarma.api.produto.Produto;
 
 public interface LoteRepositorio extends JpaRepository<Lote, String>{
 

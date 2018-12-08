@@ -1,0 +1,9 @@
+127.0.0.1:8080/h2-console/
+
+JDBC-URL: jdbc:h2:mem:testdb
+
+INSERT INTO PRODUTO (nome, descricao, fabricante, tipo, preco, cod_barra) VALUES ('Pão', 'Gostoso', 'Padaria da esquina', 'Alimento', 10.99, '1010');
+
+INSERT INTO LOTE (numero_lote, data_validade, quantidade_inicial, quantidade_vendida, cod_barra) VALUES ('01', '2018-12-10', 100, 0, '1010');
+
+SELECT * FROM LOTE;

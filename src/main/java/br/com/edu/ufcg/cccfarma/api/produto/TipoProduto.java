@@ -1,4 +1,4 @@
-package CCCFarma.model.produto;
+package br.com.edu.ufcg.cccfarma.api.produto;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -15,7 +15,7 @@ public enum TipoProduto {
 		}
 		
 		private TipoProduto(String tipo) {
-			this.tipo = tipo.toLowerCase();;
+			this.tipo = tipo.toLowerCase();
 		}
 		
 		@JsonValue

@@ -1,8 +1,6 @@
-package CCCFarma.repository;
+package br.com.edu.ufcg.cccfarma.api.auth;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import CCCFarma.model.Usuario;
 
 public interface UsuariosRepositorio extends JpaRepository<Usuario, String>{
 

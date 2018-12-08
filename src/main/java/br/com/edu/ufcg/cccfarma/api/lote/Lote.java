@@ -1,4 +1,4 @@
-package CCCFarma.model.produto;
+package br.com.edu.ufcg.cccfarma.api.lote;
 
 import java.util.Date;
 
@@ -15,6 +15,8 @@ import javax.validation.constraints.Positive;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
+
+import br.com.edu.ufcg.cccfarma.api.produto.Produto;
 
 @Entity
 public class Lote {
@@ -80,6 +82,31 @@ public class Lote {
 
 	public int getQuantidadeInicial() {
 		return quantidadeInicial;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((numeroLote == null) ? 0 : numeroLote.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Lote other = (Lote) obj;
+		if (numeroLote == null) {
+			if (other.numeroLote != null)
+				return false;
+		} else if (!numeroLote.equals(other.numeroLote))
+			return false;
+		return true;
 	}
 
 	

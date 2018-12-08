@@ -1,4 +1,4 @@
-package CCCFarma.model.produto;
+package br.com.edu.ufcg.cccfarma.api.produto;
 
 public class ProdutoResponse {
 	
