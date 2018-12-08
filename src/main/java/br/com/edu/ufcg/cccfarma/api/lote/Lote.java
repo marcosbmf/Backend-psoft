@@ -2,22 +2,26 @@ package br.com.edu.ufcg.cccfarma.api.lote;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import br.com.edu.ufcg.cccfarma.api.produto.Produto;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "numeroLote")
 @Entity
 public class Lote {
 	
@@ -28,13 +32,13 @@ public class Lote {
 	
 	@NotNull
 	@JoinColumn(name = "cod_barra")
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Produto produto;
 
 	@NotNull
-	@Future
+	@FutureOrPresent
 	@Temporal(TemporalType.DATE)
-	@Column(name="data_validade")
+	@Column(name="data_validade", columnDefinition = "Date")
 	private Date dataValidade;
 	
 	@NotNull
@@ -42,7 +46,7 @@ public class Lote {
 	@Column(name="quantidade_inicial")
 	private int quantidadeInicial;
 	
-	@Generated(value = GenerationTime.INSERT)
+	@NotNull
 	@Column(name="quantidade_vendida")
 	private int quantidadeVendida;
 	
@@ -52,7 +56,6 @@ public class Lote {
 
 	public Lote(@NotNull String numeroLote, @NotNull Produto produto, @NotNull @Future Date dataValidade,
 			@NotNull @Positive int quantidadeInicial) {
-		super();
 		this.numeroLote = numeroLote;
 		this.produto = produto;
 		this.dataValidade = dataValidade;

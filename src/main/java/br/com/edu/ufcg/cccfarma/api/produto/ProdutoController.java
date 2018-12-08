@@ -2,14 +2,15 @@ package br.com.edu.ufcg.cccfarma.api.produto;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.com.edu.ufcg.cccfarma.api.lote.Lote;
 
 @RestController
 @RequestMapping(ProdutoController.PATH)
@@ -23,13 +24,13 @@ public class ProdutoController {
 	private ProdutoService produtos;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public List<ProdutoResponse> listaProdutos(){
-		return this.produtos.makeProdutoResponse(this.produtos.getProdutos());
+	public List<Produto> listaProdutos(){
+		return this.produtos.getProdutos();
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public List<ProdutoResponse> produtoPorTipo(@RequestParam(name = "tipo", required = false) TipoProduto tipo) {
-		return this.produtos.makeProdutoResponse(this.produtos.getProdutosPorTipo(tipo));
+	public List<Produto> produtoPorTipo(@RequestParam(name = "tipo", required = false) TipoProduto tipo) {
+		return this.produtos.getProdutosPorTipo(tipo);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
@@ -38,13 +39,26 @@ public class ProdutoController {
 	}
 	
 	@RequestMapping(path = "/{produtoId}", method = RequestMethod.GET)
-	public ProdutoResponse getProduto(@PathParam("produtoId") String produtoId) {
+	public ProdutoResponse getProduto(@PathVariable("produtoId") String produtoId) {
+		System.out.println(produtoId);
 		return new ProdutoResponse(this.produtos.getProduto(produtoId), 0);
 	}
 	
 	@RequestMapping(path = "/{produtoId}", method = RequestMethod.POST)
-	public Produto updateProduto(@RequestBody Produto produto, @PathParam(PRODUTO_ID) String produtoId) {
+	public Produto updateProduto(@RequestBody Produto produto, @PathVariable(PRODUTO_ID) String produtoId) {
 		return this.produtos.updateProduto(produto, produtoId);
+	}
+	
+	@RequestMapping(path = "/{produtoId}", method = RequestMethod.DELETE)
+	public Produto updateProduto(@PathVariable(PRODUTO_ID) String produtoId) {
+		Produto produto = this.produtos.getProduto(produtoId);
+		this.produtos.deleteProduto(produtoId);
+		return produto;
+	}
+	
+	@RequestMapping(path = "/{produtoId}/lotes", method = RequestMethod.GET)
+	public List<Lote> getLotes(@PathVariable(PRODUTO_ID) String produtoId){
+		return this.produtos.getLote(produtoId);
 	}
 }
 

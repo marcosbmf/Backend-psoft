@@ -1,29 +1,40 @@
 package br.com.edu.ufcg.cccfarma.api.produto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import br.com.edu.ufcg.cccfarma.api.lote.Lote;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "codBarra")
 @Entity
 public class Produto implements Serializable{
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4509030253600549069L;
 
 	@NotNull
-	private String nome;
-	
-	@NotNull
 	@Id
 	@Column(name="cod_barra")
 	private String codBarra;
+	
+	@NotNull
+	private String nome;
 	
 	@NotNull
 	private String fabricante;
@@ -38,7 +49,14 @@ public class Produto implements Serializable{
 	@NotNull
 	private double preco;
 	
+	@OneToMany(mappedBy = "produto", targetEntity = br.com.edu.ufcg.cccfarma.api.lote.Lote.class, fetch = FetchType.LAZY)
+	private List<Lote> lotes;
+	
+	@Transient
+	private int qtdDisponivel;
+	
 	public Produto() {
+		this.lotes = new ArrayList<>();
 	}
 
 	public Produto(@NotNull String nome, @NotNull String codBarra, @NotNull String fabricante,
@@ -49,6 +67,7 @@ public class Produto implements Serializable{
 		this.fabricante = fabricante;
 		this.tipo = tipo;
 		this.preco = preco;
+		this.lotes = new ArrayList<>();
 	}
 
 	public String getDescricao() {
@@ -115,6 +134,24 @@ public class Produto implements Serializable{
 	@Override
 	public String toString() {
 		return this.codBarra + " - " + this.nome + " - " + this.fabricante + " - " + this.descricao;
+	}
+
+	public List<Lote> getLotes() {
+		return this.lotes;
+	}
+	
+	@Transient
+	public int getQtdDisponivel() {
+		return this.qtdDisponivel;
+	}
+	
+	@PostLoad
+	public void postLoad() {
+		int qtdDisponivel = 0;
+		for (Lote l : this.lotes) {
+			qtdDisponivel += l.getQuantidadeInicial() - l.getQuantidadeVendida();
+		}
+		this.qtdDisponivel = qtdDisponivel;
 	}
 
 	

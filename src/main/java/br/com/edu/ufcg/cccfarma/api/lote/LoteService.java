@@ -28,7 +28,7 @@ public class LoteService {
 	}
 	
 	public void salvaLote(@RequestBody Lote lote) {
-		lotes.save(lote);
+		lotes.saveAndFlush(lote);
 	}
 	
 	public int getQuantidadeDisponivel(Produto produto) {
