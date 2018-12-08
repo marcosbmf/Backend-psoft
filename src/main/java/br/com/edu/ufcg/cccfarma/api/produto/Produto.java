@@ -141,7 +141,7 @@ public class Produto implements Serializable{
 	}
 	
 	@Transient
-	public int getQtdDisponivel() {
+	public Integer getQtdDisponivel() {
 		return this.qtdDisponivel;
 	}
 	

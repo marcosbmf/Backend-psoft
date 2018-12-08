@@ -112,10 +112,6 @@ public class Lote {
 		return true;
 	}
 
-	public boolean naValidade() {
-		return (this.dataValidade.compareTo(java.util.Calendar.getInstance().getTime()) >=  0);
-	}
-
 	
 	
 	

@@ -35,9 +35,7 @@ public class LoteService {
 		List<Lote> lotesProduto = this.lotes.findByProduto(produto);
 		int qtdDisponivel = 0;
 		for(Lote lote : lotesProduto) {
-			if(lote.naValidade()) {
-				qtdDisponivel += lote.getQuantidadeInicial() - lote.getQuantidadeVendida();
-			}
+			qtdDisponivel += lote.getQuantidadeInicial() - lote.getQuantidadeVendida();
 		}
 		return qtdDisponivel;
 	}
