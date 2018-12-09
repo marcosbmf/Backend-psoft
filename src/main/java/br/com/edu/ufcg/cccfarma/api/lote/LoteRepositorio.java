@@ -11,6 +11,8 @@ public interface LoteRepositorio extends JpaRepository<Lote, String>{
 	List<Lote> findByProduto(Produto produto);
 
 	List<Lote> findByProdutoCodBarra(String codBarra);
+
+	Lote findByNumeroLote(String numeroLote);
 	
 	
 }

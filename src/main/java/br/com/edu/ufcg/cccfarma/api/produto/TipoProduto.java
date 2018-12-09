@@ -22,7 +22,4 @@ public enum TipoProduto {
 		public String getTipo() {
 			return this.tipo;
 		}
-		
-		
-		
 }

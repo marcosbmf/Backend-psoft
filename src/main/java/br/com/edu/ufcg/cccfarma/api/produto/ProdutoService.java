@@ -1,6 +1,8 @@
 package br.com.edu.ufcg.cccfarma.api.produto;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
 import br.com.edu.ufcg.cccfarma.api.lote.Lote;
+import br.com.edu.ufcg.cccfarma.api.promocao.Promocao;
+import br.com.edu.ufcg.cccfarma.api.promocao.PromocaoService;
 
 @Service
 @Transactional
@@ -17,12 +21,15 @@ public class ProdutoService {
 	@Autowired
 	private ProdutosRepositorio produtos;
 	
-	public List<Produto> getProdutos(){
-		return (List<Produto>) this.produtos.findAll();
+	@Autowired
+	private PromocaoService promocoes;
+	
+	public List<ProdutoResponse>  getProdutos(){
+		return this.makeResponse(this.produtos.findAll());
 	}
 	
-	public List<Produto> getProdutosPorTipo(TipoProduto tipo) {
-		return produtos.findByTipo(tipo);
+	public List<ProdutoResponse> getProdutosPorTipo(TipoProduto tipo) {
+		return makeResponse(produtos.findByTipo(tipo));
 	}
 	
 	public Produto cadastraProduto(Produto produto) {
@@ -31,9 +38,8 @@ public class ProdutoService {
 		return this.produtos.saveAndFlush(produto);
 	}
 	
-	public Produto getProduto(String produtoId) {
-		System.out.println("SERVICE" + produtoId);
-		return this.produtos.findById(produtoId).get();
+	public ProdutoResponse getProduto(String produtoId) {
+		return makeResponse(this.produtos.findById(produtoId).get());
 	}
 	
 	public Produto updateProduto(Produto produto, String produtoId) {
@@ -49,6 +55,24 @@ public class ProdutoService {
 
 	public List<Lote> getLote(String produtoId) {
 		return this.produtos.getOne(produtoId).getLotes();
+	}
+
+	public List<ProdutoResponse> makeResponse(List<Produto> produtos) {
+		Map<TipoProduto, Promocao> mapaPromo = this.promocoes.getMelhorPromocaoPorTipo();
+		List<ProdutoResponse> resposta = new ArrayList<>();
+		
+		for(Produto p: produtos) {
+			resposta.add(new ProdutoResponse(p, mapaPromo.get(p.getTipo())));
+		}
+		
+		return resposta;
+		
+	}
+	
+	public ProdutoResponse makeResponse(Produto produto) {
+		Promocao promocao = this.promocoes.getMelhorPromocaoPorTipo(produto.getTipo());
+		return new ProdutoResponse(produto, promocao);
+		
 	}
 	
 	

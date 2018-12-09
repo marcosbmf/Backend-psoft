@@ -6,8 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.ResourceAccessException;
 
 import br.com.edu.ufcg.cccfarma.api.produto.Produto;
 
@@ -22,12 +21,15 @@ public class LoteService {
 		return this.lotes.findAll();
 	}
 
-	public List<Lote> listaLotesPorProduto(@PathVariable("produtoId") String produtoId) {
+	public List<Lote> listaLotesPorProduto(String produtoId) {
 		System.out.println(produtoId);
 		return lotes.findByProdutoCodBarra(produtoId);
 	}
 	
-	public Lote salvaLote(@RequestBody Lote lote) {
+	public Lote salvaLote(Lote lote) {
+		System.out.println(this.lotes.findById(lote.getNumeroLote()));
+		if(this.lotes.findByNumeroLote(lote.getNumeroLote()) != null)
+			throw new ResourceAccessException("Produto com o mesmo id já existe!");
 		return lotes.saveAndFlush(lote);
 	}
 	
@@ -38,5 +40,11 @@ public class LoteService {
 			qtdDisponivel += lote.getQuantidadeInicial() - lote.getQuantidadeVendida();
 		}
 		return qtdDisponivel;
+	}
+	
+	public Lote updateLote(Lote lote, String produtoId) {
+		if(!lote.getNumeroLote().equals(produtoId))
+			throw new ResourceAccessException("Erro ao realizar atualização do produto!");
+		return this.lotes.saveAndFlush(lote);
 	}
 }

@@ -15,44 +15,42 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping(ProdutoController.PATH)
 public class ProdutoController {
-	
+
 	public static final String PATH = "/produtos";
 	public static final String PRODUTO_ID = "produtoId";
-	
 
 	@Autowired
 	private ProdutoService produtos;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Produto> listaProdutos(){
+	public List<ProdutoResponse> listaProdutos() {
 		return this.produtos.getProdutos();
 	}
-	
+
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public List<Produto> produtoPorTipo(@RequestParam(name = "tipo", required = false) TipoProduto tipo) {
+	public List<ProdutoResponse> produtoPorTipo(@RequestParam(name = "tipo", required = false) TipoProduto tipo) {
 		return this.produtos.getProdutosPorTipo(tipo);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT)
 	public Produto cadastraProduto(@RequestBody Produto produto) {
 		return this.produtos.cadastraProduto(produto);
 	}
-	
+
 	@RequestMapping(path = "/{produtoId}", method = RequestMethod.GET)
-	public Produto getProduto(@PathVariable("produtoId") String produtoId) {
+	public ProdutoResponse getProduto(@PathVariable("produtoId") String produtoId) {
 		return this.produtos.getProduto(produtoId);
 	}
-	
+
 	@RequestMapping(path = "/{produtoId}", method = RequestMethod.POST)
 	public Produto updateProduto(@RequestBody Produto produto, @PathVariable(PRODUTO_ID) String produtoId) {
 		return this.produtos.updateProduto(produto, produtoId);
 	}
-	
+
 	@RequestMapping(path = "/{produtoId}", method = RequestMethod.DELETE)
 	public Produto updateProduto(@PathVariable(PRODUTO_ID) String produtoId) {
-		Produto produto = this.produtos.getProduto(produtoId);
+		Produto produto = this.produtos.getProduto(produtoId).getProduto();
 		this.produtos.deleteProduto(produtoId);
 		return produto;
 	}
 }
-
