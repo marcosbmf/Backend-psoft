@@ -6,13 +6,14 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -33,22 +34,22 @@ public class Lote implements Serializable{
 	@Id
 	@NotNull
 	@Column(name = "numero_lote")
-	private String numeroLote;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long numeroLote;
 	
 	@NotNull
-	@JoinColumn(name = "cod_barra")
+	@JoinColumn(name = "cod_barra", updatable=false)
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Produto produto;
 
 	@NotNull
-	@FutureOrPresent
 	@Temporal(TemporalType.DATE)
-	@Column(name="data_validade", columnDefinition = "Date")
+	@Column(name="data_validade", columnDefinition = "Date", updatable=false)
 	private Date dataValidade;
 	
 	@NotNull
 	@Positive
-	@Column(name="quantidade_inicial")
+	@Column(name="quantidade_inicial", updatable=false)
 	private int quantidadeInicial;
 	
 	@NotNull
@@ -59,9 +60,8 @@ public class Lote implements Serializable{
 		this.quantidadeVendida = 0;
 	}
 
-	public Lote(@NotNull String numeroLote, @NotNull Produto produto, @NotNull @Future Date dataValidade,
+	public Lote(@NotNull Produto produto, @NotNull @Future Date dataValidade,
 			@NotNull @Positive int quantidadeInicial) {
-		this.numeroLote = numeroLote;
 		this.produto = produto;
 		this.dataValidade = dataValidade;
 		this.quantidadeInicial = quantidadeInicial;
@@ -76,7 +76,7 @@ public class Lote implements Serializable{
 		this.quantidadeVendida = quantidadeVendida;
 	}
 
-	public String getNumeroLote() {
+	public Long getNumeroLote() {
 		return numeroLote;
 	}
 

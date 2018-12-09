@@ -50,7 +50,7 @@ public class Produto implements Serializable{
 	private Double preco;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "produto", targetEntity = br.com.edu.ufcg.cccfarma.api.lote.Lote.class, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "produto", targetEntity = br.com.edu.ufcg.cccfarma.api.lote.Lote.class)
 	private List<Lote> lotes;
 	
 	@Transient

@@ -22,12 +22,10 @@ public class LoteService {
 	}
 
 	public List<Lote> listaLotesPorProduto(String produtoId) {
-		System.out.println(produtoId);
 		return lotes.findByProdutoCodBarra(produtoId);
 	}
 	
 	public Lote salvaLote(Lote lote) {
-		System.out.println(this.lotes.findById(lote.getNumeroLote()));
 		if(this.lotes.findByNumeroLote(lote.getNumeroLote()) != null)
 			throw new ResourceAccessException("Produto com o mesmo id já existe!");
 		return lotes.saveAndFlush(lote);
@@ -42,9 +40,23 @@ public class LoteService {
 		return qtdDisponivel;
 	}
 	
-	public Lote updateLote(Lote lote, String produtoId) {
-		if(!lote.getNumeroLote().equals(produtoId))
+	public Lote updateLote(Lote lote, Long loteId, String produtoId) {
+		if(!lote.getNumeroLote().equals(loteId) || !lote.getProduto().getCodBarra().equals(produtoId))
 			throw new ResourceAccessException("Erro ao realizar atualização do produto!");
 		return this.lotes.saveAndFlush(lote);
+	}
+	
+	public void deleteLote(Long loteId, String produtoId) {
+		Lote lote = this.lotes.getOne(loteId);
+		if(lote == null || !lote.getNumeroLote().equals(loteId) || !lote.getProduto().getCodBarra().equals(produtoId))
+			throw new ResourceAccessException("Erro ao realizar atualização do produto!");
+		if(lote.getQuantidadeVendida() != 0) {
+			throw new ResourceAccessException("Erro ao deletar lote: há produtos vendidos, impossível deletar lote.");
+		}
+		this.lotes.deleteById(loteId);
+	}
+
+	public Lote getLote(String produtoId, Long loteId) {
+		return this.lotes.getLoteByNumeroLoteAndProdutoCodBarra(loteId, produtoId);
 	}
 }

@@ -29,9 +29,10 @@ public class PromocaoController {
 	public Promocao putPromocoes(@RequestBody Promocao promo){
 		return this.promocoes.save(promo);
 	}
-	
+	/**
 	@DeleteMapping(path = "/{promocaoId}")
 	public Promocao deletePromocoes(@PathVariable("promocaoId") String id){
 		return null;
 	}
+	**/
 }
