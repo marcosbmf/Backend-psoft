@@ -1,11 +1,11 @@
 package br.com.edu.ufcg.cccfarma.api.lote;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,8 +23,13 @@ import br.com.edu.ufcg.cccfarma.api.produto.Produto;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "numeroLote")
 @Entity
-public class Lote {
+public class Lote implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@NotNull
 	@Column(name = "numero_lote")
@@ -32,7 +37,7 @@ public class Lote {
 	
 	@NotNull
 	@JoinColumn(name = "cod_barra")
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Produto produto;
 
 	@NotNull

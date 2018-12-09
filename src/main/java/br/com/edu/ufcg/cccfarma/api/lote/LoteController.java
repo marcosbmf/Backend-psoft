@@ -22,8 +22,8 @@ public class LoteController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public void salvaLote(@RequestBody Lote lote) {
-		lotes.salvaLote(lote);
+	public Lote salvaLote(@RequestBody Lote lote) {
+		return lotes.salvaLote(lote);
 	}
 	
 }

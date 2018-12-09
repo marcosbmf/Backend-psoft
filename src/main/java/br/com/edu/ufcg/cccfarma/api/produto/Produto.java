@@ -56,7 +56,6 @@ public class Produto implements Serializable{
 	private Integer qtdDisponivel;
 	
 	public Produto() {
-		this.lotes = new ArrayList<>();
 	}
 
 	public Produto(@NotNull String nome, @NotNull String codBarra, @NotNull String fabricante,
@@ -67,7 +66,6 @@ public class Produto implements Serializable{
 		this.fabricante = fabricante;
 		this.tipo = tipo;
 		this.preco = preco;
-		this.lotes = new ArrayList<>();
 	}
 
 	public String getDescricao() {

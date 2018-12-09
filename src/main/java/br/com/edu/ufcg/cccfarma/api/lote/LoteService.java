@@ -27,8 +27,8 @@ public class LoteService {
 		return lotes.findByProdutoCodBarra(produtoId);
 	}
 	
-	public void salvaLote(@RequestBody Lote lote) {
-		lotes.saveAndFlush(lote);
+	public Lote salvaLote(@RequestBody Lote lote) {
+		return lotes.saveAndFlush(lote);
 	}
 	
 	public int getQuantidadeDisponivel(Produto produto) {

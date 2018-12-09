@@ -3,6 +3,7 @@ package br.com.edu.ufcg.cccfarma.api.produto;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.edu.ufcg.cccfarma.api.lote.Lote;
-
 @RestController
+@CrossOrigin("*")
 @RequestMapping(ProdutoController.PATH)
 public class ProdutoController {
 	
@@ -53,11 +53,6 @@ public class ProdutoController {
 		Produto produto = this.produtos.getProduto(produtoId);
 		this.produtos.deleteProduto(produtoId);
 		return produto;
-	}
-	
-	@RequestMapping(path = "/{produtoId}/lotes", method = RequestMethod.GET)
-	public List<Lote> getLotes(@PathVariable(PRODUTO_ID) String produtoId){
-		return this.produtos.getLote(produtoId);
 	}
 }
 
