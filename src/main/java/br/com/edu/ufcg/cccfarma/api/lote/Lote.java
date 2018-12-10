@@ -2,12 +2,11 @@ package br.com.edu.ufcg.cccfarma.api.lote;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,11 +33,10 @@ public class Lote implements Serializable{
 	@Id
 	@NotNull
 	@Column(name = "numero_lote")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long numeroLote;
+	private Integer numeroLote;
 	
 	@NotNull
-	@JoinColumn(name = "cod_barra", updatable=false)
+	@JoinColumn(name = "cod_barra")
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Produto produto;
 
@@ -58,6 +56,7 @@ public class Lote implements Serializable{
 	
 	Lote(){
 		this.quantidadeVendida = 0;
+		this.numeroLote = ThreadLocalRandom.current().nextInt(1000000);
 	}
 
 	public Lote(@NotNull Produto produto, @NotNull @Future Date dataValidade,
@@ -76,7 +75,7 @@ public class Lote implements Serializable{
 		this.quantidadeVendida = quantidadeVendida;
 	}
 
-	public Long getNumeroLote() {
+	public Integer getNumeroLote() {
 		return numeroLote;
 	}
 

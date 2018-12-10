@@ -26,8 +26,6 @@ public class LoteService {
 	}
 	
 	public Lote salvaLote(Lote lote) {
-		if(this.lotes.findByNumeroLote(lote.getNumeroLote()) != null)
-			throw new ResourceAccessException("Produto com o mesmo id já existe!");
 		return lotes.saveAndFlush(lote);
 	}
 	
@@ -46,7 +44,7 @@ public class LoteService {
 		return this.lotes.saveAndFlush(lote);
 	}
 	
-	public void deleteLote(Long loteId, String produtoId) {
+	public void deleteLote(Integer loteId, String produtoId) {
 		Lote lote = this.lotes.getOne(loteId);
 		if(lote == null || !lote.getNumeroLote().equals(loteId) || !lote.getProduto().getCodBarra().equals(produtoId))
 			throw new ResourceAccessException("Erro ao realizar atualização do produto!");
@@ -56,7 +54,7 @@ public class LoteService {
 		this.lotes.deleteById(loteId);
 	}
 
-	public Lote getLote(String produtoId, Long loteId) {
+	public Lote getLote(String produtoId, Integer loteId) {
 		return this.lotes.getLoteByNumeroLoteAndProdutoCodBarra(loteId, produtoId);
 	}
 }

@@ -27,12 +27,12 @@ public class LoteController {
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, path = "/{loteId}")
-	public void deleteLote(@PathVariable("produtoId") String produtoId, @PathVariable("loteId") Long loteId) {
+	public void deleteLote(@PathVariable("produtoId") String produtoId, @PathVariable("loteId") Integer loteId) {
 		lotes.deleteLote(loteId, produtoId);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/{loteId}")
-	public Lote getLote(@PathVariable("produtoId") String produtoId, @PathVariable("loteId") Long loteId) {
+	public Lote getLote(@PathVariable("produtoId") String produtoId, @PathVariable("loteId") Integer loteId) {
 		return lotes.getLote(produtoId, loteId);
 	}
 }
