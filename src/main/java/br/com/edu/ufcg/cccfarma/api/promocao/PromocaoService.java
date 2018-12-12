@@ -42,7 +42,7 @@ public class PromocaoService {
 		for(Promocao p: promocoes) {
 			if (p.isOcorrendo()) {
 				Promocao best = mapa.get(p.getTipoProduto());
-				if (best == null || p.getValorDesconto() > best.getValorDesconto()) {
+				if (best == null || p.getTaxaDesconto() > best.getTaxaDesconto()) {
 					mapa.put(p.getTipoProduto(), p);
 				}
 			}
@@ -58,7 +58,7 @@ public class PromocaoService {
 		
 		for(Promocao p: promocoes) {
 			if (p.isOcorrendo()) {
-				if (best == null || p.getValorDesconto() > best.getValorDesconto()) {
+				if (best == null || p.getTaxaDesconto() > best.getTaxaDesconto()) {
 					best = p;
 				}
 			}

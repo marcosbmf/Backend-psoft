@@ -9,17 +9,13 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import br.com.edu.ufcg.cccfarma.api.lote.Lote;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "codBarra")
 @Entity
 public class Produto implements Serializable{
 	/**
@@ -51,10 +47,6 @@ public class Produto implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "produto", targetEntity = br.com.edu.ufcg.cccfarma.api.lote.Lote.class)
 	private List<Lote> lotes;
-	
-	@Transient
-	@JsonIgnore
-	private Integer qtdDisponivel;
 	
 	public Produto() {
 	}
@@ -140,17 +132,12 @@ public class Produto implements Serializable{
 	}
 	
 	@Transient
-	public Integer getQtdDisponivel() {
-		return this.qtdDisponivel;
-	}
-	
-	@PostLoad
-	public void postLoad() {
-		int qtdDisponivel = 0;
+	public Integer quantidadeDisponivel() {
+		Integer qtdDisponivel = 0;
 		for (Lote l : this.lotes) {
-			qtdDisponivel += l.getQuantidadeInicial() - l.getQuantidadeVendida();
+			qtdDisponivel += l.getQuantidadeDisponivel();
 		}
-		this.qtdDisponivel = qtdDisponivel;
+		return qtdDisponivel;
 	}
 
 	

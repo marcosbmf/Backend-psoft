@@ -1,6 +1,8 @@
 package br.com.edu.ufcg.cccfarma.api.lote;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,15 +18,11 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import br.com.edu.ufcg.cccfarma.api.produto.Produto;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "numeroLote")
 @Entity
-public class Lote implements Serializable{
-	
+public class Lote implements Serializable, Comparable<Lote> {
+
 	/**
 	 * 
 	 */
@@ -34,7 +32,7 @@ public class Lote implements Serializable{
 	@NotNull
 	@Column(name = "numero_lote")
 	private Integer numeroLote;
-	
+
 	@NotNull
 	@JoinColumn(name = "cod_barra")
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -42,19 +40,18 @@ public class Lote implements Serializable{
 
 	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name="data_validade", columnDefinition = "Date", updatable=false)
 	private Date dataValidade;
-	
+
 	@NotNull
 	@Positive
-	@Column(name="quantidade_inicial", updatable=false)
+	@Column(name = "quantidade_inicial", updatable = false)
 	private int quantidadeInicial;
-	
+
 	@NotNull
-	@Column(name="quantidade_vendida")
+	@Column(name = "quantidade_vendida")
 	private int quantidadeVendida;
-	
-	Lote(){
+
+	Lote() {
 		this.quantidadeVendida = 0;
 		this.numeroLote = ThreadLocalRandom.current().nextInt(1000000);
 	}
@@ -66,7 +63,7 @@ public class Lote implements Serializable{
 		this.quantidadeInicial = quantidadeInicial;
 		this.quantidadeVendida = 0;
 	}
-	
+
 	public int getQuantidadeVendida() {
 		return quantidadeVendida;
 	}
@@ -89,6 +86,16 @@ public class Lote implements Serializable{
 
 	public int getQuantidadeInicial() {
 		return quantidadeInicial;
+	}
+
+	public Integer getQuantidadeDisponivel() {
+		LocalDate ld = LocalDate.now();
+		Date today = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		if (this.dataValidade.after(today)) {
+			return this.quantidadeInicial - this.quantidadeVendida;
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -116,14 +123,18 @@ public class Lote implements Serializable{
 		return true;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public int compareTo(Lote o) {
+		int result = this.dataValidade.compareTo(o.dataValidade);
+		if (result == 0) {
+			result = this.getQuantidadeDisponivel().compareTo(o.getQuantidadeDisponivel());
+		}
+		return result;
+	}
+
+	public void realizaVenda(Integer qtdVendida) {
+		this.quantidadeVendida += qtdVendida;
+
+	}
+
 }

@@ -45,7 +45,7 @@ public class Promocao {
 	private boolean ocorrendo;
 	
 	@NotNull
-	private double valorDesconto;
+	private double taxaDesconto;
 	
 	Promocao(){
 	}
@@ -66,8 +66,8 @@ public class Promocao {
 		return dataTermino;
 	}
 	
-	public double getValorDesconto() {
-		return valorDesconto;
+	public double getTaxaDesconto() {
+		return taxaDesconto;
 	}
 	
 	public boolean isOcorrendo() {
@@ -81,11 +81,11 @@ public class Promocao {
 	@PrePersist
 	public void prePersist() {
 		switch(this.tipoDesconto) {
-		case BOM_DESCONTO: this.valorDesconto = 0.1;
+		case BOM_DESCONTO: this.taxaDesconto = 0.1;
 						   break;
-		case OTIMO_DESCONTO: this.valorDesconto = 0.25;
+		case OTIMO_DESCONTO: this.taxaDesconto = 0.25;
 		   				   break;
-		case SUPER_DESCONTO: this.valorDesconto = 0.50;
+		case SUPER_DESCONTO: this.taxaDesconto = 0.50;
 						   break;
 		}
 		

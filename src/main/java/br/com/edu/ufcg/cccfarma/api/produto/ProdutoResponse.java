@@ -11,10 +11,10 @@ public class ProdutoResponse {
 	
 	public ProdutoResponse(Produto produto, Promocao promocaoDisponivel) {
 		this.produto = produto;
-		this.quantidadeDisponivel = this.produto.getQtdDisponivel();
+		this.quantidadeDisponivel = this.produto.quantidadeDisponivel();
 		if (promocaoDisponivel != null) {
-			this.precoPromocional = this.produto.getPreco()*(1-promocaoDisponivel.getValorDesconto());
-			this.taxaDesconto = promocaoDisponivel.getValorDesconto();
+			this.precoPromocional = this.produto.getPreco()*(1-promocaoDisponivel.getTaxaDesconto());
+			this.taxaDesconto = promocaoDisponivel.getTaxaDesconto();
 		} else {
 			this.precoPromocional = this.getProduto().getPreco();
 			this.taxaDesconto = 0.00;
