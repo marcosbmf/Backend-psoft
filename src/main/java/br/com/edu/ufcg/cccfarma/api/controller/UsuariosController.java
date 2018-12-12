@@ -11,19 +11,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/v1/user")
 public class UsuariosController {
 
 	@Autowired
 	private UsuariosRepositorio usuarios;
 
-	@PostMapping("/api/signup")
+	@PostMapping()
     public ResponseEntity<?> cadastrar(@RequestBody Usuario novoUsuario) {
 	    usuarios.save(novoUsuario);
 	    return new ResponseEntity(novoUsuario, HttpStatus.CREATED);
     }
 
-    @GetMapping("/api/user/{cpf}")
+    @GetMapping("/{cpf}")
     public ResponseEntity<?> getUsuario(@PathVariable String cpf) {
 	    ResponseEntity response;
 	    Usuario usuario = usuarios.getOne(cpf);
