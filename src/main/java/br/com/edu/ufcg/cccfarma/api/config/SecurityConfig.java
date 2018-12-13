@@ -26,10 +26,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
+            .headers().frameOptions().disable().and()
             .httpBasic()
                 .and()
             .authorizeRequests()
-                .antMatchers("/public/**/").permitAll()
+                .antMatchers("/public/**/", "/h2-console/**/").permitAll()
                 .antMatchers("/admin/**/").hasRole("ADMIN")
                 .antMatchers("/protected/**/").hasRole("USER")
                 .and()

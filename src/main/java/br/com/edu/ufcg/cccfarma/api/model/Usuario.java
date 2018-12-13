@@ -3,10 +3,7 @@ package br.com.edu.ufcg.cccfarma.api.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -27,18 +24,33 @@ public class Usuario implements Serializable{
 	private String cpf;
 	
 	private String email;
-	
-    @JsonIgnore
+
 	private String senha;
 	
 	private String endereco;
 
     private boolean admin;
 
-    // TODO: Ajeitar isso aqui
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date cadastro;
+
+    public Usuario(){
+
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", admin=" + admin +
+                ", cadastro=" + cadastro +
+                '}';
+    }
 
     public String getNome() {
         return nome;
@@ -68,10 +80,6 @@ public class Usuario implements Serializable{
         return senha;
     }
 
-    public void setSenha(String senha) {
-        this.senha = new BCryptPasswordEncoder().encode(senha);
-    }
-
     public String getEndereco() {
         return endereco;
     }
@@ -94,6 +102,10 @@ public class Usuario implements Serializable{
 
     public void setCadastro(Date cadastro) {
         this.cadastro = cadastro;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 }

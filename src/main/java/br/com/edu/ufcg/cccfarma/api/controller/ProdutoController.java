@@ -30,7 +30,7 @@ public class ProdutoController {
 		return this.produtos.getProdutosPorTipo(tipo);
 	}
 
-	@PutMapping("/admin/produtos")
+	@PutMapping("/public/produtos")
 	public Produto cadastraProduto(@RequestBody Produto produto) {
 		return this.produtos.cadastraProduto(produto);
 	}
