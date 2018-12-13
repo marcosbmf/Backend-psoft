@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 public class Usuario implements Serializable{
@@ -68,7 +69,7 @@ public class Usuario implements Serializable{
     }
 
     public void setSenha(String senha) {
-        this.senha = senha;
+        this.senha = new BCryptPasswordEncoder().encode(senha);
     }
 
     public String getEndereco() {

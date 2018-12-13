@@ -5,37 +5,33 @@ import java.util.List;
 import br.com.edu.ufcg.cccfarma.api.service.LoteService;
 import br.com.edu.ufcg.cccfarma.api.model.Lote;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/produtos/{produtoId}/lote")
+@RequestMapping("/admin/produtos/{produtoId}/lote")
 public class LoteController {
 
 	@Autowired
 	private LoteService lotes;
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public List<Lote> listaLotesPorProduto(@PathVariable("produtoId") String produtoId) {
 		return lotes.listaLotesPorProduto(produtoId);
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
+	@PutMapping
 	public Lote salvaLote(@RequestBody Lote lote) {
 		return lotes.salvaLote(lote);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, path = "/{loteId}")
+	@DeleteMapping("/{loteId}")
 	public void deleteLote(@PathVariable("produtoId") String produtoId, @PathVariable("loteId") Integer loteId) {
 		lotes.deleteLote(loteId, produtoId);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/{loteId}")
+	@GetMapping("/{loteId}")
 	public Lote getLote(@PathVariable("produtoId") String produtoId, @PathVariable("loteId") Integer loteId) {
 		return lotes.getLote(produtoId, loteId);
 	}

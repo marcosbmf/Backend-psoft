@@ -7,17 +7,11 @@ import br.com.edu.ufcg.cccfarma.api.response.ProdutoResponse;
 import br.com.edu.ufcg.cccfarma.api.service.ProdutoService;
 import br.com.edu.ufcg.cccfarma.api.enums.TipoProduto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(ProdutoController.PATH)
 public class ProdutoController {
 
 	public static final String PATH = "/produtos";
@@ -26,32 +20,32 @@ public class ProdutoController {
 	@Autowired
 	private ProdutoService produtos;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping("/public/produtos")
 	public List<ProdutoResponse> listaProdutos() {
 		return this.produtos.getProdutos();
 	}
 
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	@GetMapping("/public/produtos/search")
 	public List<ProdutoResponse> produtoPorTipo(@RequestParam(name = "tipo", required = false) TipoProduto tipo) {
 		return this.produtos.getProdutosPorTipo(tipo);
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
+	@PutMapping("/admin/produtos")
 	public Produto cadastraProduto(@RequestBody Produto produto) {
 		return this.produtos.cadastraProduto(produto);
 	}
 
-	@RequestMapping(path = "/{produtoId}", method = RequestMethod.GET)
+	@GetMapping("/public/produtos/{produtoId}")
 	public ProdutoResponse getProduto(@PathVariable("produtoId") String produtoId) {
 		return this.produtos.getProduto(produtoId);
 	}
 
-	@RequestMapping(path = "/{produtoId}", method = RequestMethod.POST)
-	public Produto updateProduto(@RequestBody Produto produto, @PathVariable(PRODUTO_ID) String produtoId) {
+	@PostMapping("/admin/produtos/{produtoId}")
+    public Produto updateProduto(@RequestBody Produto produto, @PathVariable(PRODUTO_ID) String produtoId) {
 		return this.produtos.updateProduto(produto, produtoId);
 	}
 
-	@RequestMapping(path = "/{produtoId}", method = RequestMethod.DELETE)
+	@DeleteMapping("admin/produtos/{produtoId}")
 	public Produto updateProduto(@PathVariable(PRODUTO_ID) String produtoId) {
 		Produto produto = this.produtos.getProduto(produtoId).getProduto();
 		this.produtos.deleteProduto(produtoId);
