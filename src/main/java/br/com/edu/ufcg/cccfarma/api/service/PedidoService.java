@@ -11,6 +11,7 @@ import br.com.edu.ufcg.cccfarma.api.model.ItemPedidoPK;
 import br.com.edu.ufcg.cccfarma.api.requests.PedidoRequest;
 import br.com.edu.ufcg.cccfarma.api.repository.PedidoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import br.com.edu.ufcg.cccfarma.api.repository.LoteRepositorio;
@@ -29,12 +30,16 @@ public class PedidoService {
 	@Autowired
 	private PromocaoService promocoes;
 	
+	@Autowired
+	private CustomUserDetailsService usuarios;
+	
 	public List<Pedido> getPedidos() {
 		return this.pedidos.findAll();
 	}
 	
-	public Pedido savePedido(List<PedidoRequest> request) {
+	public Pedido savePedido(List<PedidoRequest> request, UserDetails userDetails) {
 		Pedido pedido = new Pedido();
+		pedido.setUsuario(this.usuarios.getConta(userDetails.getUsername()));
 		this.formaPedido(request, pedido);
 		return this.pedidos.saveAndFlush(pedido);
 		

@@ -48,7 +48,6 @@ public class Pedido implements Serializable {
 	@OneToMany(mappedBy = "itemPK.numeroPedido", orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = ItemPedido.class)
 	private List<ItemPedido> itens;
 	
-	@Column(name="usuario")
 	@ManyToOne(targetEntity = br.com.edu.ufcg.cccfarma.api.model.Conta.class, cascade = CascadeType.ALL)
 	private Conta usuario;
 
@@ -135,7 +134,11 @@ public class Pedido implements Serializable {
 	@PrePersist
 	public void pre() {
 		if (this.situacao == null) {
-			this.situacao = (usuario.isAdmin()) ? SituacaoPedido.NAO_ENTREGUE : SituacaoPedido.ENTREGUE;
+			this.situacao = (usuario.isAdmin()) ? SituacaoPedido.ENTREGUE : SituacaoPedido.NAO_ENTREGUE;
 		}
+	}
+
+	public void setUsuario(Conta conta) {
+		this.usuario = conta;
 	}
 }

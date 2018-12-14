@@ -38,4 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 conta.isAdmin()? authorityListAdmin: authorityListUser);
 
     }
+    
+    public Conta getConta(String username) {
+    	return this.contaRepository.findById(username).get();
+    }
 }
