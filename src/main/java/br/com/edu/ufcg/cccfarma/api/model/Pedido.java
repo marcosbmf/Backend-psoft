@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -38,12 +41,16 @@ public class Pedido implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	private SituacaoPedido situacao;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date dataEmissao;
 
 	@OneToMany(mappedBy = "itemPK.numeroPedido", orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = ItemPedido.class)
 	private List<ItemPedido> itens;
+	
+	@Column(name="usuario")
+	@ManyToOne(targetEntity = br.com.edu.ufcg.cccfarma.api.model.Conta.class, cascade = CascadeType.ALL)
+	private Conta usuario;
 
 	public Pedido() {
 		this.dataEmissao = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -51,13 +58,15 @@ public class Pedido implements Serializable {
 		this.numeroPedido = ThreadLocalRandom.current().nextInt(1000000);
 	}
 
-	public Pedido(@NotNull Integer numeroPedido, SituacaoPedido situacao, Date dataEmissao, List<ItemPedido> itens) {
+	public Pedido(@NotNull Integer numeroPedido, @NotNull SituacaoPedido situacao, Date dataEmissao,
+			List<ItemPedido> itens, Conta usuario) {
 		this.numeroPedido = numeroPedido;
 		this.situacao = situacao;
-		this.itens = itens;
 		this.dataEmissao = dataEmissao;
+		this.itens = itens;
+		this.usuario = usuario;
 	}
-	
+
 	public void adicionaItem(ItemPedido item) {
 		this.itens.add(item);
 	}
@@ -73,7 +82,7 @@ public class Pedido implements Serializable {
 	public Integer getNumeroPedido() {
 		return numeroPedido;
 	}
-	
+
 	public Date getDataEmissao() {
 		return dataEmissao;
 	}
@@ -114,13 +123,19 @@ public class Pedido implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	public Double getPrecoTotal() {
 		Double precoTotal = 0.00;
-		for (ItemPedido item: this.itens) {
+		for (ItemPedido item : this.itens) {
 			precoTotal += item.getPrecoTotal();
 		}
 		return precoTotal;
 	}
 
+	@PrePersist
+	public void pre() {
+		if (this.situacao == null) {
+			this.situacao = (usuario.isAdmin()) ? SituacaoPedido.NAO_ENTREGUE : SituacaoPedido.ENTREGUE;
+		}
+	}
 }
