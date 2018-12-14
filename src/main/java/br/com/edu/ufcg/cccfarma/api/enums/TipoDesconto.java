@@ -3,9 +3,9 @@ package br.com.edu.ufcg.cccfarma.api.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TipoDesconto {
-	BOM_DESCONTO("bom desconto"),
-	OTIMO_DESCONTO("otimo desconto"),
-	SUPER_DESCONTO("super desconto");
+	BOM_DESCONTO("Bom desconto"),
+	OTIMO_DESCONTO("Ótimo desconto"),
+	SUPER_DESCONTO("Super desconto");
 
 	String tipo;
 	

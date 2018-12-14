@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TipoProduto {
 
-		Medicamento("medicamento"),
-		HigienePessoal("higiene"),
-		Cosmeticos("cosmetico"),
-		Alimento("alimento");
+		Medicamento("Medicamento"),
+		HigienePessoal("Higiene Pessoal"),
+		Cosmeticos("Cosmético"),
+		Alimento("Alimento");
 	
 		private String tipo;
 	

@@ -31,7 +31,7 @@ public class LoteService {
 		return lotes.findByProdutoCodBarra(produtoId);
 	}
 
-	public Lote salvaLote(Lote lote) {
+	public Lote cadastraLote(Lote lote) {
 		if (this.produtos.existsById(lote.getProduto().getCodBarra())) {
 			return lotes.saveAndFlush(lote);
 		} else {
@@ -54,7 +54,7 @@ public class LoteService {
 		return this.lotes.saveAndFlush(lote);
 	}
 
-	public void deleteLote(Integer loteId, String produtoId) {
+	public void deletaLote(Integer loteId, String produtoId) {
 		Lote lote = this.lotes.getOne(loteId);
 		if (lote == null || !lote.getNumeroLote().equals(loteId) || !lote.getProduto().getCodBarra().equals(produtoId))
 			throw new ResourceAccessException("Erro ao realizar atualização do produto!");
@@ -64,7 +64,7 @@ public class LoteService {
 		this.lotes.deleteById(loteId);
 	}
 
-	public Lote getLote(String produtoId, Integer loteId) {
+	public Lote exibeLote(String produtoId, Integer loteId) {
 		return this.lotes.getLoteByNumeroLoteAndProdutoCodBarra(loteId, produtoId);
 	}
 }

@@ -27,11 +27,11 @@ public class ProdutoService {
 	@Autowired
 	private PromocaoService promocoes;
 	
-	public List<ProdutoResponse>  getProdutos(){
+	public List<ProdutoResponse>  exibeProdutos(){
 		return this.makeResponse(this.produtos.findAll());
 	}
 	
-	public List<ProdutoResponse> getProdutosPorTipo(TipoProduto tipo) {
+	public List<ProdutoResponse> exibeProdutosPorTipo(TipoProduto tipo) {
 		return makeResponse(produtos.findByTipo(tipo));
 	}
 	
@@ -41,18 +41,18 @@ public class ProdutoService {
 		return this.produtos.saveAndFlush(produto);
 	}
 	
-	public ProdutoResponse getProduto(String produtoId) {
+	public ProdutoResponse exibeProduto(String produtoId) {
 		return makeResponse(this.produtos.findById(produtoId).get());
 	}
 	
-	public Produto updateProduto(Produto produto, String produtoId) {
+	public Produto atualizaProduto(Produto produto, String produtoId) {
 		if (!produto.getCodBarra().equals(produtoId)) {
 			throw new ResourceAccessException("Update de produto inválido.");
 		}
 		return this.produtos.saveAndFlush(produto);
 	}
 
-	public void deleteProduto(String produtoId) {
+	public void deletaProduto(String produtoId) {
 		this.produtos.deleteById(produtoId);
 	}
 

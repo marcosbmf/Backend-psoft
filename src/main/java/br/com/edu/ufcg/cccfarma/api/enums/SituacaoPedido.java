@@ -3,7 +3,7 @@ package br.com.edu.ufcg.cccfarma.api.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum SituacaoPedido {
-	ENTREGUE("entregue"), NAO_ENTREGUE("nao_entregue"), CANCELADO("cancelado");
+	ENTREGUE("Entregue"), NAO_ENTREGUE("Não entregue"), CANCELADO("Cancelado");
 	
 	private String situacao;
 	

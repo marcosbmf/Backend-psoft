@@ -20,7 +20,7 @@ public class PromocaoService {
 	@Autowired
 	private PromocaoRepositorio promocoes;
 
-	public Promocao save(Promocao promocao) {
+	public Promocao cadastraPromocao(Promocao promocao) {
 		return this.promocoes.save(promocao);
 	}
 
