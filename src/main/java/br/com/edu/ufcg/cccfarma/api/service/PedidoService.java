@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 import br.com.edu.ufcg.cccfarma.api.model.*;
 import br.com.edu.ufcg.cccfarma.api.model.ItemPedidoPK;
 import br.com.edu.ufcg.cccfarma.api.requests.PedidoRequest;
-import br.com.edu.ufcg.cccfarma.api.enums.SituacaoPedido;
 import br.com.edu.ufcg.cccfarma.api.repository.PedidoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,6 @@ public class PedidoService {
 	
 	public Pedido savePedido(List<PedidoRequest> request) {
 		Pedido pedido = new Pedido();
-		pedido.setSituacao(SituacaoPedido.NAO_ENTREGUE); //VAI DEPENDER DO TIPO DE USUÁRIO.
 		this.formaPedido(request, pedido);
 		return this.pedidos.saveAndFlush(pedido);
 		

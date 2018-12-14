@@ -36,7 +36,7 @@ public class ProdutoService {
 	}
 	
 	public Produto cadastraProduto(Produto produto) {
-		if (produtos.findByCodBarra(produto.getCodBarra()) != null)
+		if (produtos.existsById(produto.getCodBarra()))
 			throw new ResourceAccessException("Produto com o mesmo id já existe!");
 		return this.produtos.saveAndFlush(produto);
 	}

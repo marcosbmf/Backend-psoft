@@ -1,13 +1,14 @@
 package br.com.edu.ufcg.cccfarma.api.model;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 public class Conta implements Serializable {
