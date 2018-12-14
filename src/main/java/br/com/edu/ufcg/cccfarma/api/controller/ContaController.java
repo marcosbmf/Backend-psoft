@@ -1,38 +1,59 @@
 package br.com.edu.ufcg.cccfarma.api.controller;
 
 import br.com.edu.ufcg.cccfarma.api.model.Conta;
-import br.com.edu.ufcg.cccfarma.api.repository.ContaRepository;
+import br.com.edu.ufcg.cccfarma.api.service.ContaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 public class ContaController {
 
-    private ContaRepository contaRepository;
+    private ContaService contaService;
 
     @Autowired
-    public ContaController(ContaRepository contaRepository) {
-        this.contaRepository = contaRepository;
+    public ContaController(ContaService contaService) {
+        this.contaService = contaService;
     }
 
     @PostMapping("/public/conta")
-    public ResponseEntity<?> signup(@RequestBody Conta conta) {
-        return new ResponseEntity(contaRepository.save(conta), HttpStatus.CREATED);
+    public ResponseEntity<?> cadastrar(@RequestBody Conta conta) {
+        return contaService.cadastrar(conta);
     }
 
-
-    @GetMapping("/admin/conta")
-    public ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(contaRepository.findAll(), HttpStatus.OK);
+    @PutMapping("/protected/conta")
+    public ResponseEntity<?> atualizar(@RequestBody Conta conta) {
+        System.out.println(conta.getUsername() + " - " + conta.getPassword());
+        return contaService.atualizar(conta);
     }
 
-    @GetMapping("/admin/conta_public")
-    public ResponseEntity<?> getAllPublic() {
-        return new ResponseEntity<>(contaRepository.findAll(), HttpStatus.OK);
+    //
+//    @DeleteMapping("/admin/conta")
+//    public ResponseEntity<?> excluir(@RequestBody Conta conta) {
+//        return contaService.excluir(conta);
+//    }
+//
+//    @GetMapping("/admin/conta")
+//    public ResponseEntity<?> exibirTodos() {
+//        return contaService.exibirTodos();
+//    }
+//
+    @GetMapping("/protected/conta")
+    public ResponseEntity<?> exibirPerfil() {
+        return contaService.exibirPerfil();
+//    }
+//
+//    @GetMapping("/admin/conta/{username}")
+//    public ResponseEntity<?> exibirPerfil(@PathVariable String username) {
+//        return contaService.exibirPerfil(username);
+//    }
+
     }
 }

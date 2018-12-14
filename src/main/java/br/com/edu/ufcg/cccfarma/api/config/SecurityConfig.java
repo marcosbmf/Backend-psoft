@@ -33,6 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**/").hasRole("ADMIN")
                 .antMatchers("/public/**/", "/h2-console/**/").permitAll()
                 .antMatchers("/protected/**/").hasRole("USER")
+                .antMatchers("/logout").hasAnyRole()
+                .and()
+            .logout()
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .and()
             .csrf().disable();
     }

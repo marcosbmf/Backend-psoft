@@ -1,5 +1,7 @@
 package br.com.edu.ufcg.cccfarma.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Column;
@@ -42,4 +44,5 @@ public class Conta implements Serializable {
     public void setPassword() {
         this.password = (new BCryptPasswordEncoder()).encode(this.password);
     }
+
 }
