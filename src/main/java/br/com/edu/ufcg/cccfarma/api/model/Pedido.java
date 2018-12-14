@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -21,9 +22,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import br.com.edu.ufcg.cccfarma.api.enums.SituacaoPedido;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import br.com.edu.ufcg.cccfarma.api.enums.SituacaoPedido;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "numeroPedido")
 @Entity
@@ -36,6 +38,7 @@ public class Pedido implements Serializable {
 
 	@Id
 	@NotNull
+	@JoinColumn(updatable=false)
 	private Integer numeroPedido;
 
 	@Enumerated(EnumType.STRING)
@@ -43,12 +46,15 @@ public class Pedido implements Serializable {
 	private SituacaoPedido situacao;
 
 	@Temporal(TemporalType.DATE)
+	@NotNull
+	@Column(updatable=false)
 	private Date dataEmissao;
 
 	@OneToMany(mappedBy = "itemPK.numeroPedido", orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = ItemPedido.class)
 	private List<ItemPedido> itens;
 	
 	@ManyToOne(targetEntity = br.com.edu.ufcg.cccfarma.api.model.Conta.class, cascade = CascadeType.ALL)
+	@JoinColumn(updatable=false)
 	private Conta usuario;
 
 	public Pedido() {
@@ -130,15 +136,19 @@ public class Pedido implements Serializable {
 		}
 		return precoTotal;
 	}
+	
+	public void setUsuario(Conta conta) {
+		this.usuario = conta;
+	}
+	
+	public Conta getUsuario() {
+		return this.usuario;
+	}
 
 	@PrePersist
 	public void pre() {
 		if (this.situacao == null) {
 			this.situacao = (usuario.isAdmin()) ? SituacaoPedido.ENTREGUE : SituacaoPedido.NAO_ENTREGUE;
 		}
-	}
-
-	public void setUsuario(Conta conta) {
-		this.usuario = conta;
 	}
 }

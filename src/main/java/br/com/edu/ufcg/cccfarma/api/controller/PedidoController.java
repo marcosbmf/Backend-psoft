@@ -2,18 +2,17 @@ package br.com.edu.ufcg.cccfarma.api.controller;
 
 import java.util.List;
 
-import br.com.edu.ufcg.cccfarma.api.model.Pedido;
-import br.com.edu.ufcg.cccfarma.api.requests.PedidoRequest;
-import br.com.edu.ufcg.cccfarma.api.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/public/pedido")
+import br.com.edu.ufcg.cccfarma.api.model.Pedido;
+import br.com.edu.ufcg.cccfarma.api.requests.PedidoRequest;
+import br.com.edu.ufcg.cccfarma.api.service.PedidoService;
+
+@RestController("/protected/pedido")
 public class PedidoController {
 
 	
@@ -26,7 +25,7 @@ public class PedidoController {
 	}
 	
 	@PutMapping
-	public Pedido putPedido(@RequestBody List<PedidoRequest> request, @AuthenticationPrincipal UserDetails userDetails){
-		return this.pedidos.savePedido(request, userDetails);
+	public Pedido putPedido(@RequestBody List<PedidoRequest> request){
+		return this.pedidos.savePedido(request);
 	}
 }
