@@ -1,8 +1,10 @@
 package br.com.edu.ufcg.cccfarma.api.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -48,6 +50,7 @@ public class Produto implements Serializable{
 	private List<Lote> lotes;
 	
 	public Produto() {
+		this.lotes = new ArrayList<Lote>();
 	}
 
 	public Produto(@NotNull String nome, @NotNull String codBarra, @NotNull String fabricante,
@@ -128,6 +131,15 @@ public class Produto implements Serializable{
 
 	public List<Lote> getLotes() {
 		return this.lotes;
+	}
+	
+	@Transient
+	public boolean getVencimentoProximo() {
+		for (Lote lote : this.lotes) {
+			if (lote.getVencimentoProximo())
+				return true;
+		}
+		return false;
 	}
 	
 	@Transient

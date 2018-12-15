@@ -17,28 +17,31 @@ import br.com.edu.ufcg.cccfarma.api.service.LoteService;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/admin/produtos/{produtoId}/lotes")
 public class LoteController {
 
 	@Autowired
 	private LoteService lotes;
-
-	@GetMapping
+	
+	@GetMapping("/admin/produtos/{produtoId}/lotes")
 	public List<Lote> listaLotesPorProduto(@PathVariable("produtoId") String produtoId) {
-		return lotes.listaLotesPorProduto(produtoId);
+		if (produtoId.equals("-1")) {
+			return this.lotes.listaLotes();
+		} else {
+			return lotes.listaLotesPorProduto(produtoId);
+		}
 	}
 
-	@PostMapping
+	@PostMapping("/admin/produtos/{produtoId}/lotes")
 	public Lote cadastraLote(@RequestBody Lote lote) {
 		return lotes.cadastraLote(lote);
 	}
 
-	@DeleteMapping("/{loteId}")
+	@DeleteMapping("/admin/produtos/{produtoId}/lotes/{loteId}")
 	public void deletaLote(@PathVariable("produtoId") String produtoId, @PathVariable("loteId") Integer loteId) {
 		lotes.deletaLote(loteId, produtoId);
 	}
 
-	@GetMapping("/{loteId}")
+	@GetMapping("/admin/produtos/{produtoId}/lotes/{loteId}")
 	public Lote exibeLote(@PathVariable("produtoId") String produtoId, @PathVariable("loteId") Integer loteId) {
 		return lotes.exibeLote(produtoId, loteId);
 	}

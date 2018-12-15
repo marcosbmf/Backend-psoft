@@ -3,6 +3,7 @@ package br.com.edu.ufcg.cccfarma.api.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -84,6 +86,13 @@ public class Lote implements Serializable, Comparable<Lote> {
 
 	public int getQuantidadeInicial() {
 		return quantidadeInicial;
+	}
+	
+	@Transient
+	public boolean getVencimentoProximo() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, +1);
+		return (this.dataValidade.before(calendar.getTime()));
 	}
 
 	public Integer getQuantidadeDisponivel() {
