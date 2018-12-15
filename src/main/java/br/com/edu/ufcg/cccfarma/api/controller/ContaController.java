@@ -2,6 +2,8 @@ package br.com.edu.ufcg.cccfarma.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +15,7 @@ import br.com.edu.ufcg.cccfarma.api.model.Conta;
 import br.com.edu.ufcg.cccfarma.api.service.ContaService;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins="*", allowedHeaders="*")
 public class ContaController {
 
     private ContaService contaService;
