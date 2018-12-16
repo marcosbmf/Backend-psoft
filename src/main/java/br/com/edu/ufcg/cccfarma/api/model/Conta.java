@@ -18,6 +18,7 @@ public class Conta implements Serializable {
     private String username;
 
     @NotNull
+    @JsonIgnore
     private String password;
 
     @Column(updatable = false)

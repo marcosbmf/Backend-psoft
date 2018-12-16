@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,11 @@ public class PedidoService {
 	private ContaService usuarios;
 
 	public List<Pedido> getPedidos() {
-		return this.pedidos.findAll();
+		Conta usuario = ((Optional<Conta>) this.usuarios.exibirPerfil().getBody()).get();
+		if (usuario.isAdmin())
+			return this.pedidos.findAll();
+		else
+			return this.pedidos.findByUsuarioUsername(usuario.getUsername());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -56,11 +61,16 @@ public class PedidoService {
 		for (PedidoRequest itemRequest : request) {
 			List<Lote> lotes = this.lotes.listaLotesPorProduto(itemRequest.getProduto().getCodBarra());
 			Collections.sort(lotes);
-			int qtd = itemRequest.getQuantidade();
-			Produto produto = itemRequest.getProduto();
-			Promocao promo = promocoes.get(produto.getTipo());
-			Double preco = (promo == null) ? produto.getPreco() : produto.getPreco() * (1 - promo.getTaxaDesconto());
-			this.adicionaAoPedido(produto, lotes, qtd, preco, pedido);
+			if (lotes.size() >= 1) {
+				int qtd = itemRequest.getQuantidade();
+				Produto produto = lotes.get(0).getProduto();
+				Promocao promo = promocoes.get(produto.getTipo());
+				Double preco = (promo == null) ? produto.getPreco() : produto.getPreco() * (1 - promo.getTaxaDesconto());
+				this.adicionaAoPedido(produto, lotes, qtd, preco, pedido);
+			} else {
+				throw new IllegalArgumentException(
+						"Não há disponibilidade desta quantidade do produto " + itemRequest.getProduto().getNome());
+			}
 		}
 
 	}
