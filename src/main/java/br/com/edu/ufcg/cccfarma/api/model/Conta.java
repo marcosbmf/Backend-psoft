@@ -1,24 +1,31 @@
 package br.com.edu.ufcg.cccfarma.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 public class Conta implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     private String username;
 
     @NotNull
-    @JsonIgnore
+    @JsonProperty(access=Access.WRITE_ONLY)
     private String password;
 
     @Column(updatable = false)

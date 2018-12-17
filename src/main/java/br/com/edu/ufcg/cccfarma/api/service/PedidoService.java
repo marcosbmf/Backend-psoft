@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,6 +99,17 @@ public class PedidoService {
 			throw new IllegalArgumentException(
 					"Não há disponibilidade desta quantidade do produto " + produto.getNome());
 		}
+	}
+	
+	public Pedido editaPedido(Pedido pedido, Integer pedidoId) {
+		Pedido editado = this.pedidos.getOne(pedido.getNumeroPedido());
+		if (editado == null) {
+			throw new IllegalArgumentException("Produto não existe!");
+		} else if (editado.getNumeroPedido() != pedidoId) {
+			throw new IllegalArgumentException("BAD REQUEST!");
+		}
+		editado.setSituacao(pedido.getSituacao());
+		return this.pedidos.saveAndFlush(editado);
 	}
 
 }

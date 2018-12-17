@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,8 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import br.com.edu.ufcg.cccfarma.api.enums.TipoProduto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.com.edu.ufcg.cccfarma.api.enums.TipoProduto;
 
 @Entity
 public class Produto implements Serializable{
