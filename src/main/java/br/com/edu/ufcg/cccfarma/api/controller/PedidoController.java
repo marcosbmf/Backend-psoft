@@ -15,7 +15,7 @@ import br.com.edu.ufcg.cccfarma.api.model.Pedido;
 import br.com.edu.ufcg.cccfarma.api.requests.PedidoRequest;
 import br.com.edu.ufcg.cccfarma.api.service.PedidoService;
 
-@RestController("/protected/pedidos")
+@RestController
 @CrossOrigin("*")
 public class PedidoController {
 
@@ -23,17 +23,17 @@ public class PedidoController {
 	@Autowired
 	PedidoService pedidos;
 	
-	@GetMapping
+	@GetMapping("/protected/pedidos")
 	public List<Pedido> exibePedidos(){
 		return this.pedidos.getPedidos();
 	}
 	
-	@PostMapping
+	@PostMapping("/protected/pedidos")
 	public Pedido cadastraPedido(@RequestBody List<PedidoRequest> request){
 		return this.pedidos.savePedido(request);
 	}
 	
-	@PutMapping("/{pedidoId}")
+	@PutMapping("/protected/pedidos/{pedidoId}")
 	public Pedido editaPedido(@RequestBody Pedido request, @PathVariable("pedidoId") Integer pedidoId){
 		return this.pedidos.editaPedido(request, pedidoId);
 	}

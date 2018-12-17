@@ -101,7 +101,7 @@ public class PedidoService {
 		}
 	}
 	
-	public Pedido editaPedido(Pedido pedido, Integer pedidoId) {
+	public Pedido editaPedido(Pedido pedido, int pedidoId) {
 		Pedido editado = this.pedidos.getOne(pedido.getNumeroPedido());
 		if (editado == null) {
 			throw new IllegalArgumentException("Produto não existe!");
